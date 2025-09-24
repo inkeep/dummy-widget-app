@@ -1,103 +1,102 @@
-import Image from "next/image";
+"use client"
+
+import {
+  InkeepEmbeddedChat,
+  type InkeepEmbeddedChatProps,
+} from "@inkeep/cxkit-react-oss";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const embeddedChatProps: InkeepEmbeddedChatProps = {
+    aiChatSettings: {
+      graphUrl: "http://localhost:3003/api/chat",
+      headers: {
+        Authorization:
+          'Bearer ' + process.env.GRAPH_API_KEY,
+      //   "x-inkeep-tenant-id": "default",
+      //   "x-inkeep-project-id": "weather-project",
+      //   "x-inkeep-graph-id": "weather-graph",
+      },
+      // apiKey: '` + process.env.GRAPH_API_KEY",
+      // components: {
+      //   WeatherForecast,
+      // },
+    },
+  };
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  return <InkeepEmbeddedChat {...embeddedChatProps} />;
+}
+
+const WeatherForecast = ({ forecast }: { forecast: any[] }) => {
+  const formatTime = (datetime: string) => {
+    const date = new Date(datetime);
+    return date.toLocaleTimeString('en-US', { 
+      hour: 'numeric', 
+      hour12: true 
+    });
+  };
+
+  const getWeatherIcon = (weatherCode: number) => {
+    switch (weatherCode) {
+      case 0: return '☀️'; // Clear skies
+      case 1: return '⛅'; // Partly cloudy
+      case 2: return '☁️'; // Cloudy
+      case 3: return '🌧️'; // Rainy
+      default: return '🌤️';
+    }
+  };
+
+  return (
+    <div className="weather-forecast" style={{
+      padding: '16px',
+      backgroundColor: '#f8fafc',
+      borderRadius: '8px',
+      margin: '16px 0',
+      border: '1px solid #e2e8f0'
+    }}>
+      <h3 style={{ margin: '0 0 16px 0', color: '#1e293b' }}>Weather Forecast</h3>
+      <div style={{ display: 'flex', gap: '12px', overflowX: 'auto' }}>
+        {forecast.map((item, index) => (
+          <div 
+            key={index} 
+            style={{
+              minWidth: '120px',
+              padding: '12px',
+              backgroundColor: 'white',
+              borderRadius: '6px',
+              border: '1px solid #e2e8f0',
+              textAlign: 'center',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+            }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            <div style={{ fontSize: '24px', marginBottom: '8px' }}>
+              {getWeatherIcon(item.weatherCode)}
+            </div>
+            <div style={{ 
+              fontSize: '14px', 
+              fontWeight: '600', 
+              color: '#374151',
+              marginBottom: '4px'
+            }}>
+              {formatTime(item.datetime)}
+            </div>
+            <div style={{ 
+              fontSize: '20px', 
+              fontWeight: 'bold', 
+              color: '#1e293b',
+              marginBottom: '4px'
+            }}>
+              {Math.round(item.temperature)}°{item.temperatureUnit}
+            </div>
+            <div style={{ 
+              fontSize: '12px', 
+              color: '#6b7280',
+              lineHeight: '1.3'
+            }}>
+              {item.weatherDescription}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
-}
+};
